@@ -13,7 +13,12 @@
 #define OR ||
 #define ISNOT !=
 #define NOT !
-#define then 
+#define then
+
+//Definition d'assert
+#define assertEquals(a,b) assert(a==b);printf("\033[32massertEquals reussi a la ligne %d \n\n\033[0m",__LINE__)
+#define assertTrue(a) assert(a);printf("\033[32massertTrue reussi a la ligne %d \n\n\033[0m",__LINE__)
+#define assertFalse(a) assert(!a);printf("\033[32massertFalse reussi a la ligne %d \n\n\033[0m",__LINE__)
 
 typedef enum { false, true} bool;
 
@@ -43,6 +48,8 @@ long fact2 (int n)
   bisfact(n,&r) ;
   return r ;
 }
+
+//================================================================================================================================================================
 
 /*************************************************/
 /*                                               */
@@ -93,15 +100,34 @@ void afficheYlongdouble (int n) {}
 /*************************************************/
 
 
-double power1 (double x, long n) { return 0 ; }
+double power1 (double x, long n) {
+    if(n==0){
+        return 1;
+    }else{
+        return power1(x,n-1)*x;
+    }
+}
 
 /*************************************************/
 
-double power2a (double x, long n) { return 0 ; }
+double power2a (double x, long n) {
+    int r = 1;
+    for(long i=1;i<=n;i++){
+        r =r*x;
+    }
+    return r;
+}
 
 /*************************************************/
 
-double power2b (double x, long n) { return 0 ; }
+double power2b (double x, long n) {
+    int r = 1;
+    while(n>0){
+        r =r*x;
+        n--;
+    }
+    return r;
+}
 
 /*************************************************/
 
@@ -254,7 +280,7 @@ int Ackermann (int m, int i)
    default : return 0 ; 
    }
 }
-
+//===========================================================================================================================================================
 
 /*************************************************/
 /*                                               */
@@ -282,7 +308,7 @@ int main(int argc, char** argv)
   
 /****************  petit test sur le fonctionnement du switch  ************/
 
-if (true) {
+if (false) {
 
  switch (2)  
    {
@@ -310,7 +336,7 @@ if (true) {
       
 /************************  taille des nombres  *************************/
       
-if (true) {     
+if (false) {
        
        printf("ce programme suppose que les long font 8 octets\n") ;
        printf("S'ils n'en font que 4, il faudra utiliser long long\n") ;
@@ -340,7 +366,7 @@ if (true) {
 
 /************************  factorielle  *************************/
 
-if (true) {
+if (false) {
 
      printf("%ld \n",fact(5)) ;
      printf("%ld \n",fact2(5)) ;
@@ -354,7 +380,7 @@ if (true) {
   // e = 2,7182818284 5904523536 0287471352 6624977572 4709369995 
   //       9574966967 6277240766 3035354759 4571382178 5251664274
 
-if (true) {  
+if (false) {
        
 
         printf(" e1 = %.20f \n", Efloat()) ;
@@ -363,7 +389,7 @@ if (true) {
         
 }
 
-if (true) {  
+if (false) {
             afficheYfloat(30) ;
             afficheYdouble(30) ;
             afficheYlongdouble(30) ;
@@ -371,7 +397,7 @@ if (true) {
         
 /******************    power     *******************************/
 
-if (false) {  
+if (true) {
 
         //   test simplet, vérifie le B.A. BA, test de 2^10 pour toutes les versions
         
