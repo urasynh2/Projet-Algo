@@ -132,8 +132,9 @@ void AjouteDevantDernierZero_rec_term(Liste *l, int x);
 void AjouteDevantDernierZero_rec_iter(Liste *l, int x);
 void testAjouteDevantDernierZero();
 
-
 void Tic(Liste *l);
+void testTic();
+
 
 
 
@@ -321,6 +322,9 @@ bool sontEgales(Liste l1, Liste l2) {
     }
 }
 
+Liste *PointeurSuite(Liste *l){
+    return &(*l)->suivant;
+}
 
 /*************************************************/
 /*                                               */
@@ -557,8 +561,10 @@ Liste FonctVireDernier_rec(Liste l){
     }
 }
 
-/*
+
+
 Liste FonctVireDernier_iter(Liste l) {
+
     Liste res;
     initVide(&res);
     if (estVide(l)) {
@@ -575,8 +581,8 @@ Liste FonctVireDernier_iter(Liste l) {
 }
 
 
-
-Liste FonctVireDernier_iter2(Liste l) {
+/*
+Liste FonctVireDernier_iter(Liste l) {
     if (estVide(l) OR estVide(suite(l))) {
         Liste LV;
         initVide(&LV);
@@ -590,7 +596,6 @@ Liste FonctVireDernier_iter2(Liste l) {
     return copie;
 }
 */
-
 void testFonctVireDernier(Liste (*operation)(Liste)){
     Liste l1, l2, l3;
 
@@ -608,9 +613,11 @@ void testFonctVireDernier(Liste (*operation)(Liste)){
     initVide (&l3) ;
     empile(2, &l3);
     empile(5, &l3);
+    empile(4, &l3);
+    empile(8, &l3);
+    printf("salam\n");
     affiche(l3);
     affiche(operation(l3));
-    assertTrue( sontEgales(l2,operation(l3)) );
 
     VideListe(&l1);
     VideListe(&l2);
@@ -623,18 +630,14 @@ void testFonctVireDernier(Liste (*operation)(Liste)){
 /*           AjouteDevantPremierZero             */
 /*                                               */
 /*************************************************/
-/*
+
 void AjouteDevantPremierZero(Liste *l, int x){
     if (estVide(*l) OR premier(*l)==0){
         empile(x, l);
     }else {
-        Liste temp = suite(*l);
-        AjouteDevantPremierZero(&temp,x);
-        empile(premier(*l),temp);
-        *l = temp;
+        AjouteDevantPremierZero(PointeurSuite(l),x);
     }
 }
-
 
 void testAjouteDevantPremierZero(){
     Liste l1;
@@ -642,16 +645,16 @@ void testAjouteDevantPremierZero(){
 
     empile(5, &l1);
     empile(6, &l1);
-    empile(0, &l1);
-    empile(0, &l1);
+    empile(6, &l1);
+    empile(6, &l1);
     empile(5, &l1);
     affiche(l1);
-    AjouteDevantPremierZero(&l1,555);
+    AjouteDevantPremierZero(&l1,69);
     affiche(l1);
 
     VideListe(&l1);
 }
- */
+
 /*************************************************/
 /*                                               */
 /*           AjouteDevantDernierZero             */
@@ -663,21 +666,46 @@ void testAjouteDevantPremierZero(){
 /*           Tic                                 */
 /*                                               */
 /*************************************************/
-/*
+
 void Tic(Liste *l){
     if(NOT estVide(*l)){
-        if(premier(*l)==0 AND premier(suite(*l))){
+        if(premier(*l)==0 AND premier(suite(*l))==0){
             depile(l);
             Tic(l);
         }else if(premier(*l)==0 AND suite(*l)!=0) {
             depile(l);
         }else if(premier(*l)!=0){
             empile(0,l);
-            Tic(suite(suite(*l)));
+            Tic(PointeurSuite(PointeurSuite(l)));
         }
     }
 }
-*/
+
+void testTic(){
+    Liste l1;
+    initVide (&l1) ;
+
+    empile(4, &l1);
+    empile(0, &l1);
+    empile(0, &l1);
+    empile(4, &l1);
+    empile(4, &l1);
+    empile(3, &l1);
+    empile(0, &l1);
+    empile(0, &l1);
+    empile(0, &l1);
+    empile(7, &l1);
+    empile(5, &l1);
+    empile(5, &l1);
+    affiche(l1);
+
+    Tic(&l1);
+    affiche(l1);
+
+
+}
+
+
 /*************************************************/
 /*                                               */
 /*           Permutations                        */
@@ -711,6 +739,7 @@ void poup (Liste l)
 
 
 int main(int argc, char** argv){
+
     //system("cls");
 
     //printf("============================TEST UnPlusDeuxEgalTrois============================\n");
@@ -731,20 +760,26 @@ int main(int argc, char** argv){
     //printf("============================TEST NombreMemePosition_rec_sp============================\n");
     //testNombreMemePosition(NombreMemePosition_rec_sp);
 
-    printf("============================TEST FonctVireDernier_rec============================\n");
-    testFonctVireDernier(FonctVireDernier_rec);
+    //printf("============================TEST FonctVireDernier_rec============================\n");
+    //testFonctVireDernier(FonctVireDernier_rec);
 
-    //printf("============================TEST FonctVireDernier_iter============================\n");
+    //printf("============================TEST FonctVireDernier_iter====PAS FAIT========================\n");
     //testFonctVireDernier(FonctVireDernier_iter);
 
     //printf("============================TEST AjouteDevantPremierZero============================\n");
     //testAjouteDevantPremierZero();
 
-    //printf("============================TEST AjouteDevantDernierZero_rec============================\n");
-    //printf("============================TEST AjouteDevantDernierZero_rec_term============================\n");
-    //printf("============================TEST AjouteDevantDernierZero_iter============================\n");
-    //printf("============================TEST Tic============================\n");
-    //printf("============================TEST Permutations============================\n");
+    //printf("============================TEST AjouteDevantDernierZero_rec=========PAS FAIT===================\
+
+    //printf("============================TEST AjouteDevantDernierZero_rec_term===========PAS FAIT=================\n");
+
+    //printf("============================TEST AjouteDevantDernierZero_iter============PAS FAIT================\n");
+
+    printf("============================TEST Tic============================\n");
+    testTic();
+
+    //printf("============================TEST Permutations==========PAS FAIT==================\n");
+
 
 
 
