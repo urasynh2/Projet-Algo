@@ -28,14 +28,14 @@ typedef enum { false, true} bool;
 /*                                               */
 /*************************************************/
 
-long fact (int n) 
+long long fact (int n)
 { if (n==0) return 1 ;
   else return n * fact(n-1) ; 
 }
 
 // itou avec un arg out => passage par adresse
 
-void bisfact(int n, long * r) 
+void bisfact(int n, long long * r)
 { if (n==0) 
          *r=1.0 ;
   else { bisfact(n-1,r) ;
@@ -43,8 +43,8 @@ void bisfact(int n, long * r)
        }
 }
 
-long fact2 (int n)
-{ long r ;
+long long fact2 (int n)
+{ long long r ;
   bisfact(n,&r) ;
   return r ;
 }
@@ -66,15 +66,82 @@ long fact2 (int n)
 
 /*************************************************/
 
-float Efloat () { return 0 ; }
+float Efloat () {
+    float e = 1;
+    //printf(" premiere valeur e3 =   %.20f \n", e) ;
+
+    int n = 1;
+    int factn = 1;
+
+    float tmp;
+
+    //printf(" n = %d ", n) ;
+    //printf(" n! = %d ", factn) ;
+    //printf(" e3 = %.20f \n", e) ;
+    do{
+        tmp = e;
+        factn *= n ;
+        e += 1.0L/factn;
+        n++;
+        //printf(" n = %d ", n) ;
+        //printf(" n! = %d ", factn) ;
+        //printf(" e3 = %.20f \n", e) ;
+    }while(tmp<e);
+    return e;
+}
 
 /*************************************************/
 
-double Edouble () { return 0 ; }
+double Edouble() {
+    double e = 1.;
+    //printf(" premiere valeur e3 =   %.20f \n", e) ;
+
+    int n = 1;
+    int factn = 1.0L;
+
+    double tmp;
+
+    //printf(" n = %d ", n) ;
+    //printf(" n! = %d ", factn) ;
+    //printf(" e3 = %.20f \n", e) ;
+    do{
+        tmp = e;
+        factn *= n ;
+        e += 1.0L/factn;
+        n++;
+        //printf(" n = %d ", n) ;
+        //printf(" n! = %d ", factn) ;
+        //printf(" e3 = %.20f \n", e) ;
+    }while(tmp<e);
+    return e;
+}
+
   
 /*************************************************/
+/* les long double ne marchent pas sur mon  pc je ne sais pourquoi */
+long double Elongdouble () {
+    long double e = 1;
+    //printf(" premiere valeur e3 =   %.20Lf \n", e) ;
 
-long double Elongdouble () { return 0 ; }
+    int n = 1;
+    int factn = 1.0L;
+
+    long double tmp;
+
+    //printf(" n = %d ", n) ;
+    //printf(" n! = %d ", factn) ;
+    //printf(" e3 = %.20Lf \n", e) ;
+    do{
+        tmp = e;
+        factn *= n ;
+        e += 1.0L/factn;
+        n++;
+        //printf(" n = %d ", n) ;
+        //printf(" n! = %d ", factn) ;
+        //printf(" e3 = %.20Lf \n", e) ;
+    }while(tmp<e);
+    return e;
+}
 
 /*************************************************/
 /*                                               */
@@ -82,15 +149,41 @@ long double Elongdouble () { return 0 ; }
 /*                                               */
 /*************************************************/
 
-void afficheYfloat (int n) {}
+void afficheYfloat (int n) {
+    printf("Suite Yn en float: \n");
+    float Yn = Efloat() - 1.0f;
+    printf("Y0= %.20f \n",Yn);
+    for(int nn= 1; nn<=n ;nn++){
+        Yn = nn * Yn - 1.0f;
+        printf("Y%d= %.20f \n",nn,Yn);
+    }
+}
 
 /*************************************************/
 
-void afficheYdouble (int n) {}
+void afficheYdouble (int n) {
+    printf("Suite Yn en double: \n");
+    double Yn = Edouble() - 1.0;
+    printf("Y0= %.30lf \n",Yn);
+    for(int nn= 1; nn<=n ;nn++){
+        Yn = (nn * Yn) - 1.0;
+        printf("Y%d= %.30lf \n",nn,Yn);
+    }
+}
 
 /*************************************************/
 
-void afficheYlongdouble (int n) {}
+void afficheYlongdouble (int i) {
+    long double e = Efloat();
+    long double y = e - 1.0L;
+
+    printf("Suite y0 = %.20Lf\n", y);
+
+    for (int n = 1; n <= i; n++) {
+        y = n * y - 1.0L;
+        printf("y%d = %.20Lf\n", n, y);
+    }
+}
 
 
 /*************************************************/
@@ -100,7 +193,7 @@ void afficheYlongdouble (int n) {}
 /*************************************************/
 
 
-double power1 (double x, long n) {
+double power1 (double x, long long n) {
     if(n==0){
         return 1;
     }else{
@@ -110,9 +203,9 @@ double power1 (double x, long n) {
 
 /*************************************************/
 
-double power2a (double x, long n) {
+double power2a (double x, long long n) {
     int r = 1;
-    for(long i=1;i<=n;i++){
+    for(long long i=1;i<=n;i++){
         r =r*x;
     }
     return r;
@@ -120,7 +213,7 @@ double power2a (double x, long n) {
 
 /*************************************************/
 
-double power2b (double x, long n) {
+double power2b (double x, long long n) {
     int r = 1;
     while(n>0){
         r =r*x;
@@ -131,18 +224,38 @@ double power2b (double x, long n) {
 
 /*************************************************/
 
-double power3 (double x, long n) { return 0 ; }
+void pow3(double x, long long n,double *res){
+    if (n != 0) {
+        *res = *res * x;
+        pow3(x,n-1,res);
+    }
+}
+
+double power3 (double x, long long n) {
+    double res = 1.0;
+    pow3(x,n,&res);
+    return res;
+}
 
 /*************************************************/
 
-double power4 (double x, long n) { return 0 ; }
 
+double pow4(double x, long long n,double res){
+    if (n == 0) {
+        return res;
+    }else{
+        return pow4(x,n-1,res*x);
+    }
+}
+
+double power4 (double x, long long n) {
+    return pow4(x,n,1);
+}
 /*************************************************/
 
      //   Observation (1+1/10^k)^(10^k) : rame : 8 en 1/2s, 9 en qqs s, 10 en 1m
 
-double power5 (double x, long n)
-{
+double power5 (double x, long long n){
     if (n == 0)
          return 1 ;
     else if (n % 2 == 0)
@@ -152,25 +265,67 @@ double power5 (double x, long n)
 
 /*************************************************/
 
-double power6 (double x, long n) { return 0 ; }
+double power6 (double x, long long n) {
+    if (n == 0){
+        return 1 ;
+    }
+    double y = power6(x,n/2);
+    if (n % 2 == 0){
+        return y*y;
+    }else{
+        return y*y*x ;
+    }
+}
 
 /*************************************************/
 
-double power7 (double x, long n) { return 0 ; }
+double power7 (double x, long long n) {
+    if (n==0){
+        return 1;
+    }else if (n%2==0){
+        return power7(x*x ,n/2);
+    }else{
+        return power7(x*x,n/2) * x;
+    }
+}
 
 /*************************************************/
+double pow8(double x, long long n, double res){
+    if (n==0){
+        return res;
+    }else if (n%2==0){
+        return pow8(x*x ,n/2,res);
+    }else{
+        return pow8(x*x,n/2, res * x);
+    }
+}
 
-double power8 (double x, long n) { return 0 ; }
+double power8 (double x, long long n) {
+    return pow8(x,n,1);
+}
 
 /*************************************************/
+double pow9 (double x, long long n, double *res) {
+    if(n!=0){
+        if (n%2!=0){
+            *res *= x;
+        }
+        pow9(x*x,n/2,res);
+    }
+}
 
-double power9 (double x, long n) { return 0 ; }
+
+double power9 (double x, long long n) {
+    double res = 1.0;
+    pow9(x,n,&res);
+    return res;
+}
 
 /*************************************************/
 
      //   Observation (1+1/10^k)^(10^k) : calcul immédiat
 
-double power10 (double x, long n)
+double power10 (double x, long long n)
 {
     double r = 1.0 ;
     while (n ISNOT 0) 
@@ -183,7 +338,7 @@ double power10 (double x, long n)
 
 /*************************************************/
 
-double power (double x, long n, int i)
+double power (double x, long long n, int i)
 { switch (i)  
    {
    case 1 : return power1(x,n) ; break ;
@@ -213,7 +368,7 @@ double power (double x, long n, int i)
    //   rend 1 à partir de k=8 (float), k=16 (double)
    //   rend 1 non observé sur les long double, maxint atteint avant
 
-long double power11 (long double x, long n)
+long double power11 (long double x, long long n)
 {
     long double r = 1.0 ;
     while (n ISNOT 0) 
@@ -226,7 +381,7 @@ long double power11 (long double x, long n)
 
 /*************************************************/
 
-float power12 (float x, long n)
+float power12 (float x, long long n)
 {
     float r = 1.0 ;
     while (n ISNOT 0) 
@@ -289,16 +444,16 @@ int Ackermann (int m, int i)
 /*************************************************/
 
 
-int main(int argc, char** argv)
-{
-
+int main(int argc, char** argv){
+    system("cls");
+    printf("DEBUT MAIN\n");
        double x ;
        long double y ;
        float z ;
        
        int cptx ;
   
-       long nx ;
+       long long nx ;
        
        int i,j ; 
        
@@ -336,14 +491,14 @@ if (false) {
       
 /************************  taille des nombres  *************************/
       
-if (false) {
+if (true) {
        
        printf("ce programme suppose que les long font 8 octets\n") ;
        printf("S'ils n'en font que 4, il faudra utiliser long long\n") ;
 
        printf("short : %d octets\n", (int) sizeof(short));
        printf("int : %d octets\n", (int) sizeof(int));
-       printf("long : %d octets\n", (int) sizeof(long));
+       printf("long : %d octets\n", (int) sizeof(long long));
        printf("long long : %d octets\n", (int) sizeof(long long));
        printf("float : %d octets\n", (int) sizeof(float));
        printf("double : %d octets\n", (int) sizeof(double));
@@ -381,29 +536,30 @@ if (false) {
   //       9574966967 6277240766 3035354759 4571382178 5251664274
 
 if (false) {
-       
 
-        printf(" e1 = %.20f \n", Efloat()) ;
-        printf(" e3 = %.30lf \n", Edouble()) ; 
-        printf(" e3 = %.40Lf \n", Elongdouble()) ; 
-        
+    //printf("e = 2,7182818284590452353602874713526624977572470936999595749669676277240766303535475945713821785251664274\n");
+    printf("e1 = %.20f \n", Efloat()) ;
+    printf("e2 = %.30lf \n", Edouble()) ;
+    printf("e3 = %.40Lf \n", Elongdouble()) ;
 }
 
 if (false) {
             afficheYfloat(30) ;
             afficheYdouble(30) ;
-            afficheYlongdouble(30) ;
+            //afficheYlongdouble(30) ;
 }
         
 /******************    power     *******************************/
 
 if (true) {
-
-        //   test simplet, vérifie le B.A. BA, test de 2^10 pour toutes les versions
-        
-        for(i=0 ; i<=10 ; i++)
-        printf("Power %d dit que power(2,10) vaut %.0lf \n", i, power(2,10,i) ) ;
-        
+    double X = 2;
+    long long N = 10;
+    //   test simplet, vérifie le B.A. BA, test de 2^10 pour toutes les versions
+    printf("Power 1 dit que power(%f,%ld) vaut %.0lf \n", X,N, power(X,N,1) ) ;
+    printf("Power 2a dit que power(%f,%ld) vaut %.0lf \n", X,N, power(X,N,2) ) ;
+    printf("Power 2b dit que power(%f,%ld) vaut %.0lf \n", X,N, power(X,N,0) ) ;
+    for(i=3 ; i<=10 ; i++)
+        printf("Power %d dit power(%f,%ld) vaut %.0lf \n", i,X,N, power(X,N,0) ) ;
         printf("\n") ;
       
 }
@@ -457,7 +613,7 @@ if (false) {
         printf("\n") ;
 
 
-        printf("VERSION 11 avec long double \n") ;
+        printf("VERSION 11 avec long long long long double \n") ;
         y = 1.0 ;
         nx = 1 ;
         for(j=0 ; j<=18 ; j++)
@@ -484,7 +640,7 @@ if (false) {
 }
 
 /***********************************************************************/
-
+    printf("FIN MAIN\n");
     return 0;
 }
 

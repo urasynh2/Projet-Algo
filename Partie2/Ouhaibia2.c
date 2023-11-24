@@ -10,6 +10,8 @@
 /*                                               */
 /*************************************************/
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCUnusedMacroInspection"
 #define AND &&
 #define OR ||
 #define ISNOT !=
@@ -562,7 +564,7 @@ Liste FonctVireDernier_rec(Liste l){
 }
 
 
-
+/*
 Liste FonctVireDernier_iter(Liste l) {
 
     Liste res;
@@ -579,25 +581,44 @@ Liste FonctVireDernier_iter(Liste l) {
     }
     return res;
 }
-
+*/
 
 /*
 Liste FonctVireDernier_iter(Liste l) {
+    Liste res;
     if (estVide(l) OR estVide(suite(l))) {
-        Liste LV;
-        initVide(&LV);
-        return LV;
+        initVide(&res);
+        return res;
     }
-    Liste copie = l;
-    while (NOT estVide(suite(copie))) {
-        copie = suite(copie);
+
+    Liste *dernier;
+    dernier =&res;
+    while (NOT estVide(suite(*dernier))) {
+        dernier = PointeurSuite(dernier);
     }
-    depile(&copie);
-    return copie;
-}
+
+    return res
+
 */
+Liste FonctVireDernier_iter(Liste l) {
+    Liste res;
+    initVide(&res);
+    if (estVide(l) OR estVide(suite(l))) {
+        return res;
+    }
+    Liste *pl, *pres;
+    pl = &l;
+    pres = &res;
+    while (NOT estVide(suite(*pl))) {
+        empile(premier(*pl),pres);
+        pl  = PointeurSuite(pl);
+        pres  = PointeurSuite(pres);
+    }
+    return res;
+}
+
 void testFonctVireDernier(Liste (*operation)(Liste)){
-    Liste l1, l2, l3;
+    Liste l1, l2, l3, res3attendu;
 
     initVide (&l1);
     affiche(l1);
@@ -611,18 +632,26 @@ void testFonctVireDernier(Liste (*operation)(Liste)){
     assertTrue( sontEgales(l1,operation(l2)) );
 
     initVide (&l3) ;
+    initVide (&res3attendu) ;
+
     empile(2, &l3);
     empile(5, &l3);
     empile(4, &l3);
     empile(8, &l3);
-    printf("salam\n");
+
+    empile(5, &res3attendu);
+    empile(4, &res3attendu);
+    empile(8, &res3attendu);
+
     affiche(l3);
     affiche(operation(l3));
+    assertTrue( sontEgales(operation(l3),res3attendu) );
+
 
     VideListe(&l1);
     VideListe(&l2);
     VideListe(&l3);
-
+    VideListe(&res3attendu);
 }
 
 /*************************************************/
@@ -669,21 +698,79 @@ void testAjouteDevantPremierZero(){
 
 void Tic(Liste *l){
     if(NOT estVide(*l)){
-        if(premier(*l)==0 AND premier(suite(*l))==0){
-            depile(l);
-            Tic(l);
-        }else if(premier(*l)==0 AND suite(*l)!=0) {
-            depile(l);
-        }else if(premier(*l)!=0){
-            empile(0,l);
-            Tic(PointeurSuite(PointeurSuite(l)));
+        if(NOT estVide(suite(*l))) {
+            if (premier(*l) == 0 AND premier(suite(*l)) == 0) {
+                depile(l);
+                Tic(l);
+            } else if (premier(*l) == 0 AND premier(suite(*l)) != 0) {
+                depile(l);
+            } else if (premier(*l) != 0) {
+                empile(0, l);
+                Tic(PointeurSuite(PointeurSuite(l)));
+            }
+        }else{
+            if (premier(*l) == 0){
+                depile(l);
+            }else if (premier(*l)!=0){
+                empile(0, l);
+            }
         }
     }
 }
 
 void testTic(){
-    Liste l1;
+    Liste l1, res1attendu,l2, res2attendu;
     initVide (&l1) ;
+    initVide (&l2) ;
+    initVide (&res1attendu) ;
+    initVide (&res2attendu) ;
+
+    affiche(l1);
+    Tic(&l1);
+    affiche(l1);
+    assertTrue(sontEgales(l1,res1attendu));
+
+    empile(0, &l1);
+
+    affiche(l1);
+    Tic(&l1);
+    affiche(l1);
+    assertTrue(sontEgales(l1,res1attendu));
+
+    empile(4, &l1);
+
+    empile(4, &res1attendu);
+    empile(0, &res1attendu);
+
+    affiche(l1);
+    Tic(&l1);
+    affiche(l1);
+    assertTrue(sontEgales(l1,res1attendu));
+
+    depile(&l1);
+
+    empile(3, &l1);
+    empile(5, &l1);
+    empile(6, &l1);
+    empile(7, &l1);
+
+    empile(3, &res1attendu);
+    empile(0, &res1attendu);
+    empile(5, &res1attendu);
+    empile(0, &res1attendu);
+    empile(6, &res1attendu);
+    empile(0, &res1attendu);
+    empile(7, &res1attendu);
+    empile(0, &res1attendu);
+
+
+    affiche(l1);
+    Tic(&l1);
+    affiche(l1);
+    assertTrue(sontEgales(l1,res1attendu));
+
+    VideListe(&l1);
+    VideListe(&res1attendu);
 
     empile(4, &l1);
     empile(0, &l1);
@@ -697,26 +784,66 @@ void testTic(){
     empile(7, &l1);
     empile(5, &l1);
     empile(5, &l1);
-    affiche(l1);
 
+    empile(4, &res1attendu);
+    empile(0, &res1attendu);
+    empile(0, &res1attendu);
+    empile(4, &res1attendu);
+    empile(4, &res1attendu);
+    empile(3, &res1attendu);
+    empile(7, &res1attendu);
+    empile(0, &res1attendu);
+    empile(5, &res1attendu);
+    empile(0, &res1attendu);
+    empile(5, &res1attendu);
+    empile(0, &res1attendu);
+
+    affiche(l1);
     Tic(&l1);
     affiche(l1);
+    assertTrue(sontEgales(l1,res1attendu));
+
+    empile(0, &l2);
+    empile(0, &l2);
+    empile(0, &l2);
+    empile(0, &l2);
+    empile(0, &l2);
+
+    affiche(l2);
+    Tic(&l2);
+    affiche(l2);
+    assertTrue(sontEgales(l2,res2attendu));
 
 
+    empile(0, &l2);
+    empile(0, &l2);
+    empile(0, &l2);
+    empile(0, &l2);
+    empile(0, &l2);
+    empile(7, &l2);
+    empile(5, &l2);
+    empile(5, &l2);
+
+    empile(7, &res2attendu);
+    empile(0, &res2attendu);
+    empile(5, &res2attendu);
+    empile(0, &res2attendu);
+    empile(5, &res2attendu);
+    empile(0, &res2attendu);
+
+    affiche(l2);
+    Tic(&l2);
+    affiche(l2);
+    assertTrue(sontEgales(l2,res2attendu));
+
+
+
+    VideListe(&l1);
+    VideListe(&res1attendu);
+    VideListe(&l2);
+    VideListe(&res2attendu);
 }
 
-
-/*************************************************/
-/*                                               */
-/*           Permutations                        */
-/*                                               */
-/*************************************************/
-
-/*************************************************/
-/*                                               */
-/*           ZAjouteAvant                        */
-/*                                               */
-/*************************************************/
 /*===================================================================================================*/
 
 /*************************************************/
@@ -739,8 +866,8 @@ void poup (Liste l)
 
 
 int main(int argc, char** argv){
-
-    //system("cls");
+    system("cls");
+    printf("DEBUT MAIN \n");
 
     //printf("============================TEST UnPlusDeuxEgalTrois============================\n");
     //testUnPlusDeuxEgalTrois();
@@ -761,9 +888,9 @@ int main(int argc, char** argv){
     //testNombreMemePosition(NombreMemePosition_rec_sp);
 
     //printf("============================TEST FonctVireDernier_rec============================\n");
-    //testFonctVireDernier(FonctVireDernier_rec);
+    //(FonctVireDernier_rec);
 
-    //printf("============================TEST FonctVireDernier_iter====PAS FAIT========================\n");
+    //printf("============================TEST FonctVireDernier_iter============================\n");
     //testFonctVireDernier(FonctVireDernier_iter);
 
     //printf("============================TEST AjouteDevantPremierZero============================\n");
@@ -778,11 +905,11 @@ int main(int argc, char** argv){
     printf("============================TEST Tic============================\n");
     testTic();
 
-    //printf("============================TEST Permutations==========PAS FAIT==================\n");
 
 
 
-
-
+    printf("FIN MAIN\n");
     return 0;
 }
+
+#pragma clang diagnostic pop
