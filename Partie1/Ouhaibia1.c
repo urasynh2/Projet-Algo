@@ -118,7 +118,7 @@ double Edouble() {
 
   
 /*************************************************/
-/* les long double ne marchent pas sur mon  pc je ne sais pourquoi */
+/* les long double ne s'affichent pas sur mon  pc je ne sais pourquoi */
 long double Elongdouble () {
     long double e = 1;
     //printf(" premiere valeur e3 =   %.20Lf \n", e) ;
@@ -193,7 +193,7 @@ void afficheYlongdouble (int i) {
 /*************************************************/
 
 
-double power1 (double x, long long n) {
+double power1 (double x,long long n) {
     if(n==0){
         return 1;
     }else{
@@ -305,7 +305,7 @@ double power8 (double x, long long n) {
 }
 
 /*************************************************/
-double pow9 (double x, long long n, double *res) {
+void pow9 (double x, long long n, double *res) {
     if(n!=0){
         if (n%2!=0){
             *res *= x;
@@ -341,17 +341,17 @@ double power10 (double x, long long n)
 double power (double x, long long n, int i)
 { switch (i)  
    {
-   case 1 : return power1(x,n) ; break ;
-   case 2 : return power2a(x,n) ; break ;  // 2 pour 2a
-   case 0 : return power2b(x,n) ; break ; // 0 pour 2b
-   case 3 : return power3(x,n) ; break ;
-   case 4 : return power4(x,n) ; break ;
-   case 5 : return power5(x,n) ; break ;
-   case 6 : return power6(x,n) ; break ;
-   case 7 : return power7(x,n) ; break ;
-   case 8 : return power8(x,n) ; break ;
-   case 9 : return power9(x,n) ; break ;
-  case 10 : return power10(x,n) ; break ;
+   case 1 : return power1(x,n) ;
+   case 2 : return power2a(x,n) ;   // 2 pour 2a
+   case 0 : return power2b(x,n) ;  // 0 pour 2b
+   case 3 : return power3(x,n) ;
+   case 4 : return power4(x,n) ;
+   case 5 : return power5(x,n) ;
+   case 6 : return power6(x,n) ;
+   case 7 : return power7(x,n) ;
+   case 8 : return power8(x,n) ;
+   case 9 : return power9(x,n) ;
+  case 10 : return power10(x,n) ;
      default : return 0 ; 
    }
 }
@@ -400,19 +400,60 @@ float power12 (float x, long long n)
 /*************************************************/
 
 
-int A1(int m, int n) { return 0 ; }
+int A1(int m, int n) {
+    if (m == 0) {
+        return n + 1;
+    } else {
+        if (n == 0) {
+            return A1(m - 1, 1);
+        } else {
+            return A1(m - 1, A1(m, n - 1));
+        }
+    }
+}
 
-int Ackermann1 (int m) { return 0 ; }
+
+int Ackermann1 (int m) {
+    return A1(m,0);
+}
 
 /*************************************************/
 
-int A2(int m, int n) { return 0 ; }
+int A2(int m, int n) {
+    if (m==0){
+        return n+1;
+    }else{
+        int r=1;
+        for(int i=1; i<=n+1;i++){
+            r= A2(m-1,r);
+        }
+        return r;
+    }
 
-int Ackermann2 (int m) { return 0 ; }
+}
+
+int Ackermann2 (int m) {
+    return A2(m,0);
+}
 
 /*************************************************/
 
-int Ackermann3 (int m) { return 0 ; }
+int A3(int m, int n) {
+    int mm=m;
+    while(mm!=0){
+        if(n==0){
+            n=1;
+        }else{
+            n= A3(mm,n-1);
+        }
+        mm--;
+    }
+    return n+1;
+}
+
+int Ackermann3 (int m) {
+    return A3(m,0);
+}
 
 /*************************************************/
 
@@ -435,6 +476,80 @@ int Ackermann (int m, int i)
    default : return 0 ; 
    }
 }
+
+/*************************************************/
+/*                                               */
+/*             Suite Xn                          */
+/*                                               */
+/*************************************************/
+
+int logEntier(int n, int cpt){
+    if(n==1){
+        return cpt;
+    }else{
+        return logEntier(n/2,cpt+1);
+    }
+}
+
+int ln2(int n){
+    return logEntier(n,0);
+}
+
+int X1(int n){
+    int i = 0;
+    int res = 2;
+    while(i!=n){
+        i++;
+        res = res + ln2(res);
+    }
+    return res;
+}
+
+int X2(int n){
+    if(n==0){
+        return 2;
+    }else{
+        int tmp = X2(n-1);
+        return tmp + ln2(tmp);
+    }
+}
+
+int xn3(int n, int cpt){
+    if(n==0){
+        return cpt;
+    }else{
+        return xn3(n-1, cpt + ln2(cpt));
+    }
+}
+int X3(int n){
+    return xn3(n,2);
+}
+
+int xn4(int n, int *cpt){
+    if(n!=0){
+        *cpt = *cpt + ln2(*cpt);
+        xn4(n-1, cpt);
+    }
+}
+
+
+int X4(int n){
+    int cpt = 2;
+    xn4(n,&cpt);
+    return cpt;
+}
+
+
+int X (int n, int i){
+    switch (i){
+        case 1 : return X1 (n) ;
+        case 2 : return X2 (n) ;
+        case 3 : return X3 (n) ;
+        case 4 : return X4 (n) ;
+        default : return 0 ;
+    }
+}
+
 //===========================================================================================================================================================
 
 /*************************************************/
@@ -491,14 +606,14 @@ if (false) {
       
 /************************  taille des nombres  *************************/
       
-if (true) {
+if (false) {
        
        printf("ce programme suppose que les long font 8 octets\n") ;
        printf("S'ils n'en font que 4, il faudra utiliser long long\n") ;
 
        printf("short : %d octets\n", (int) sizeof(short));
        printf("int : %d octets\n", (int) sizeof(int));
-       printf("long : %d octets\n", (int) sizeof(long long));
+       printf("long : %d octets\n", (int) sizeof( long));
        printf("long long : %d octets\n", (int) sizeof(long long));
        printf("float : %d octets\n", (int) sizeof(float));
        printf("double : %d octets\n", (int) sizeof(double));
@@ -523,8 +638,8 @@ if (true) {
 
 if (false) {
 
-     printf("%ld \n",fact(5)) ;
-     printf("%ld \n",fact2(5)) ;
+     printf("%lld \n",fact(5)) ;
+     printf("%lld \n",fact2(5)) ;
      printf("\n") ;
 }
 
@@ -551,34 +666,33 @@ if (false) {
         
 /******************    power     *******************************/
 
-if (true) {
-    double X = 2;
-    long long N = 10;
+if (false) {
+    double X = -2;
+    long N = 2;
     //   test simplet, vérifie le B.A. BA, test de 2^10 pour toutes les versions
     printf("Power 1 dit que power(%f,%ld) vaut %.0lf \n", X,N, power(X,N,1) ) ;
     printf("Power 2a dit que power(%f,%ld) vaut %.0lf \n", X,N, power(X,N,2) ) ;
     printf("Power 2b dit que power(%f,%ld) vaut %.0lf \n", X,N, power(X,N,0) ) ;
     for(i=3 ; i<=10 ; i++)
-        printf("Power %d dit power(%f,%ld) vaut %.0lf \n", i,X,N, power(X,N,0) ) ;
+        printf("Power %d dit power(%f,%ld) vaut %.0lf \n", i,X,N, power(X,N,i) ) ;
         printf("\n") ;
       
 }
 
         
-if (false) {  
+if (false) {
 
-        i=5 ;  // numéro de la version que l'on teste
+        i=9;  // numéro de la version que l'on teste
 
         // test de la résistance de power version i, calcul de (1+1/N)^N
         // pour des N puissances de 10 de plus en plus grosses
      
         x = 1.0 ;
         nx = 1 ;
-        for(j=0 ; j<=15 ; j++)
-        {
-        printf("power %d ((1+10^-%2d)^(10^%2d)) rend %.12lf\n", i, j, j, power(1+x,nx,i)) ;
-        x = x/10 ;
-        nx = nx * 10 ;
+        for(j=0 ; j<=15 ; j++){
+            printf("power %d ((1+10^-%2d)^(10^%2d)) rend %.12lf\n", i, j, j, power(1+x,nx,i)) ;
+            x = x/10 ;
+            nx = nx * 10 ;
         }
         printf("\n") ;
        
@@ -613,7 +727,7 @@ if (false) {
         printf("\n") ;
 
 
-        printf("VERSION 11 avec long long long long double \n") ;
+        printf("VERSION 11 avec long double \n") ;
         y = 1.0 ;
         nx = 1 ;
         for(j=0 ; j<=18 ; j++)
@@ -629,17 +743,33 @@ if (false) {
 }
 
 /******************    Ackermann    *******************************/
-                
-if (false) { 
- 
-        for(i=1 ; i<=5 ; i++)  // numéro de version
-        
-        for(j=0 ; j<=5 ; j++)  // test de A(j,0) pour j de 0 à 5
-        
-        printf("Ack%d(%d) = %d \n", i, j, Ackermann(j,i)) ;
+
+if (false) {
+
+        for(i=1 ; i<=5 ; i++) { // numéro de version
+            for (j = 0; j <= 5; j++) {
+                // test de A(j,0) pour j de 0 à 5
+                printf("Ack%d(%d) = %d \n", i, j, Ackermann(j, i));
+            }
+            printf("\n");
+        }
 }
 
-/***********************************************************************/
+/***********************    Xn        ********************************/
+
+
+    if (true) {
+
+        for(i=1 ; i<=4 ; i++) { // numéro de version
+            for (j = 0; j <= 100; j++) {
+                // test de A(j,0) pour j de 0 à 5
+                printf("X%d(%d) = %d \n", i, j, X(j,i));
+            }
+            printf("\n");
+        }
+    }
+
+/*******************************************************************************/
     printf("FIN MAIN\n");
     return 0;
 }
