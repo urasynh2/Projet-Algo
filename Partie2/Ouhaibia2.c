@@ -685,6 +685,69 @@ void testAjouteDevantPremierZero(){
 /*                                               */
 /*************************************************/
 
+void Bis(Liste *l,int x, bool zero,bool vu){
+    if(!estVide(*l)){
+        if (premier(*l)==0){
+            zero = TRUE;
+        }
+        Bis(PointeurSuite(l),x,zero,vu);
+        if(premier(*l)==0 AND !vu){
+            empile(x,l);
+            vu = TRUE;
+        }
+    }else{
+        if(!zero){
+            empile(x,l);
+        }
+    }
+}
+
+void AjouteDevantDernierZero_rec(Liste *l,int x){
+    Bis(l,x,FALSE,FALSE);
+}
+
+void testAjouteDevantDernierZero(){
+    Liste l1;
+    initVide (&l1) ;
+
+    affiche(l1);
+    AjouteDevantDernierZero_rec(&l1,69);
+    affiche(l1);
+    printf("\n");
+
+
+    empile(2, &l1);
+    empile(2, &l1);
+    empile(2, &l1);
+    empile(3, &l1);
+    empile(6, &l1);
+    empile(5, &l1);
+    empile(8, &l1);
+    affiche(l1);
+    AjouteDevantDernierZero_rec(&l1,69);
+    affiche(l1);
+
+    VideListe(&l1);
+    printf("\n");
+
+    Liste l2;
+    initVide (&l2) ;
+
+    empile(2, &l2);
+    empile(2, &l2);
+    empile(2, &l2);
+    empile(0, &l2);
+    empile(6, &l2);
+    empile(0, &l2);
+    empile(8, &l2);
+    affiche(l2);
+    AjouteDevantDernierZero_rec(&l2,69);
+    affiche(l2);
+
+    VideListe(&l2);
+}
+
+
 /*************************************************/
 /*                                               */
 /*           Tic                                 */
@@ -923,16 +986,17 @@ int main(int argc, char** argv){
         printf("============================TEST AjouteDevantPremierZero============================\n");
         testAjouteDevantPremierZero();
     }
-    if(FALSE) {
-        printf("============================TEST AjouteDevantDernierZero_rec=========PAS FAIT===================\n");
-    }
+    if(TRUE) {
+        printf("============================TEST AjouteDevantDernierZero_rec============================\n");
+        testAjouteDevantDernierZero();
+        }
     if(FALSE) {
         printf("============================TEST AjouteDevantDernierZero_rec_term===========PAS FAIT=================\n");
     }
     if(FALSE) {
         printf("============================TEST AjouteDevantDernierZero_iter============PAS FAIT================\n");
     }
-    if(TRUE) {
+    if(FALSE) {
         printf("============================TEST Tic============================\n");
         testTic();
     }
