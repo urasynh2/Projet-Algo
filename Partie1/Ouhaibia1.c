@@ -744,10 +744,10 @@ if (false) {
 
 /******************    Ackermann    *******************************/
 
-if (false) {
+if (true){
 
-        for(i=1 ; i<=5 ; i++) { // numéro de version
-            for (j = 0; j <= 5; j++) {
+        for(i=2 ; i<=5 ; i++) { // numéro de version
+            for (j = 0; j <=5; j++) {
                 // test de A(j,0) pour j de 0 à 5
                 printf("Ack%d(%d) = %d \n", i, j, Ackermann(j, i));
             }
@@ -760,7 +760,7 @@ if (false) {
 
     if (true) {
 
-        for(i=1 ; i<=4 ; i++) { // numéro de version
+        for(i=0 ; i<=4 ; i++) { // numéro de version
             for (j = 0; j <= 100; j++) {
                 // test de A(j,0) pour j de 0 à 5
                 printf("X%d(%d) = %d \n", i, j, X(j,i));

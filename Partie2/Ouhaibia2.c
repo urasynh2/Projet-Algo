@@ -3,6 +3,11 @@
 #include <stdlib.h>
 #include <assert.h>
 
+/*************************************************************/
+/* Nom: OUHAIBIA                                             */
+/* Prénom: Mohamed Amine                                     */
+/* Email: mohamed-amine.ouhaibia@universite-paris-saclay.fr  */
+/*************************************************************/
 
 /*************************************************/
 /*                                               */
@@ -103,6 +108,9 @@ void poup(Liste l);
 
 /*===================================================================================================*/
 void affiche(Liste l);
+bool sontEgales(Liste l1, Liste l2);
+Liste *PointeurSuite(Liste *l);
+
 
 
 bool UnPlusDeuxEgalTrois(Liste l);
@@ -131,8 +139,8 @@ void testAjouteDevantPremierZero();
 
 void AjouteDevantDernierZero_rec(Liste *l, int x);
 void AjouteDevantDernierZero_rec_term(Liste *l, int x);
-void AjouteDevantDernierZero_rec_iter(Liste *l, int x);
-void testAjouteDevantDernierZero();
+void AjouteDevantDernierZero_iter(Liste *l, int x);
+void testAjouteDevantDernierZero(void (*operation)(Liste*,int));
 
 void Tic(Liste *l);
 void testTic();
@@ -663,57 +671,23 @@ void AjouteDevantPremierZero(Liste *l, int x){
     }
 }
 
-void testAjouteDevantPremierZero(){
+void testAjouteDevantPremierZero() {
     Liste l1;
-    initVide (&l1) ;
-
-    empile(5, &l1);
-    empile(6, &l1);
-    empile(6, &l1);
-    empile(6, &l1);
-    empile(5, &l1);
-    affiche(l1);
-    AjouteDevantPremierZero(&l1,69);
-    affiche(l1);
-
-    VideListe(&l1);
-}
-
-/*************************************************/
-/*                                               */
-/*           AjouteDevantDernierZero             */
-/*                                               */
-/*************************************************/
-
-void Bis(Liste *l,int x, bool zero,bool vu){
-    if(!estVide(*l)){
-        if (premier(*l)==0){
-            zero = TRUE;
-        }
-        Bis(PointeurSuite(l),x,zero,vu);
-        if(premier(*l)==0 AND !vu){
-            empile(x,l);
-            vu = TRUE;
-        }
-    }else{
-        if(!zero){
-            empile(x,l);
-        }
-    }
-}
-
-void AjouteDevantDernierZero_rec(Liste *l,int x){
-    Bis(l,x,FALSE,FALSE);
-}
-
-void testAjouteDevantDernierZero(){
-    Liste l1;
-    initVide (&l1) ;
+    initVide(&l1);
 
     affiche(l1);
-    AjouteDevantDernierZero_rec(&l1,69);
+    AjouteDevantPremierZero(&l1, 69);
     affiche(l1);
     printf("\n");
+    depile(&l1);
+
+    empile(0, &l1);
+    affiche(l1);
+    AjouteDevantPremierZero(&l1, 69);
+    affiche(l1);
+    printf("\n");
+    depile(&l1);
+    depile(&l1);
 
 
     empile(2, &l1);
@@ -724,7 +698,123 @@ void testAjouteDevantDernierZero(){
     empile(5, &l1);
     empile(8, &l1);
     affiche(l1);
-    AjouteDevantDernierZero_rec(&l1,69);
+    AjouteDevantPremierZero(&l1, 69);
+    affiche(l1);
+
+    VideListe(&l1);
+    printf("\n");
+
+    Liste l2;
+    initVide(&l2);
+
+    empile(2, &l2);
+    empile(2, &l2);
+    empile(2, &l2);
+    empile(0, &l2);
+    empile(6, &l2);
+    empile(0, &l2);
+    empile(8, &l2);
+    affiche(l2);
+    AjouteDevantPremierZero(&l2, 69);
+    affiche(l2);
+
+    VideListe(&l2);
+}
+/*************************************************/
+/*                                               */
+/*           AjouteDevantDernierZero             */
+/*                                               */
+/*************************************************/
+
+void Bis(Liste *l,int x,bool* vu){
+    if(estVide(*l)){
+        if (!*vu){
+            empile(x,l);
+        }
+    }else{
+        if (premier(*l)==0){
+            *vu = TRUE;
+        }
+        Bis(PointeurSuite(l),x,vu);
+        if(premier(*l)==0 AND *vu){
+            *vu = FALSE;
+            empile(x,l);
+        }
+    }
+}
+
+void AjouteDevantDernierZero_rec(Liste *l,int x){
+    bool vu = FALSE;
+    Bis(l,x,&vu);
+}
+
+void Bis2(Liste *l,int x,Liste* m) {
+    if(estVide(*l)){
+        if(m!=NULL){
+            empile(x,m);
+        }else{
+            empile(x,l);
+        }
+    }else{
+        if(premier(*l)==0){
+            m = l;
+        }
+        Bis2(PointeurSuite(l),x,m);
+    }
+}
+
+
+void AjouteDevantDernierZero_rec_term(Liste *l,int x){
+    Liste *m;
+    m = NULL;
+    Bis2(l, x, m);
+}
+
+void AjouteDevantDernierZero_iter(Liste *l, int x){
+    Liste* p,m;
+    p = l;
+    m = NULL;
+    while( NOT estVide(*p)){
+        if(premier(*p)==0){
+            m = p;
+        }
+        p = PointeurSuite(p);
+    }
+    if(m==NULL){
+        empile(x,p);
+    }else{
+        empile(x,m);
+    }
+}
+
+void testAjouteDevantDernierZero(void (*operation)(Liste*,int)){
+    Liste l1;
+    initVide (&l1) ;
+
+    affiche(l1);
+    operation(&l1,69);
+    affiche(l1);
+    printf("\n");
+    depile(&l1);
+
+    empile(0, &l1);
+    affiche(l1);
+    operation(&l1,69);
+    affiche(l1);
+    printf("\n");
+    depile(&l1);
+    depile(&l1);
+
+
+    empile(2, &l1);
+    empile(2, &l1);
+    empile(2, &l1);
+    empile(3, &l1);
+    empile(6, &l1);
+    empile(5, &l1);
+    empile(8, &l1);
+    affiche(l1);
+    operation(&l1,69);
     affiche(l1);
 
     VideListe(&l1);
@@ -741,7 +831,7 @@ void testAjouteDevantDernierZero(){
     empile(0, &l2);
     empile(8, &l2);
     affiche(l2);
-    AjouteDevantDernierZero_rec(&l2,69);
+    operation(&l2,69);
     affiche(l2);
 
     VideListe(&l2);
@@ -754,7 +844,7 @@ void testAjouteDevantDernierZero(){
 /*                                               */
 /*************************************************/
 /*
-void Ti(Liste *l){
+void Tic(Liste *l){
     if(NOT estVide(*l)){
         if(NOT estVide(suite(*l))) {
             if (premier(*l) == 0 AND premier(suite(*l)) == 0) {
@@ -799,6 +889,8 @@ void Tic(Liste *l){
         }
     }
 }
+
+
 
 void testTic(){
     Liste l1, res1attendu,l2, res2attendu;
@@ -950,53 +1042,56 @@ void poup (Liste l)
 int main(int argc, char** argv){
     system("cls");
     printf("DEBUT MAIN \n");
-    if(FALSE) {
+    if(TRUE) {
         printf("============================TEST UnPlusDeuxEgalTrois============================\n");
         testUnPlusDeuxEgalTrois();
     }
-    if(FALSE) {
+    if(TRUE) {
         printf("============================TEST Croissante============================\n");
         testCroissante();
     }
-    if(FALSE) {
+    if(TRUE) {
         printf("============================TEST NombreMemePosition_rec============================\n");
         testNombreMemePosition(NombreMemePosition_rec);
     }
-    if(FALSE) {
+    if(TRUE) {
         printf("============================TEST NombreMemePosition_iter============================\n");
         testNombreMemePosition(NombreMemePosition_iter);
     }
-    if(FALSE) {
+    if(TRUE) {
         printf("============================TEST NombreMemePosition_rec_sf============================\n");
         testNombreMemePosition(NombreMemePosition_rec_sf);
     }
-    if(FALSE) {
+    if(TRUE) {
         printf("============================TEST NombreMemePosition_rec_sp============================\n");
         testNombreMemePosition(NombreMemePosition_rec_sp);
     }
-    if(FALSE) {
+    if(TRUE) {
         printf("============================TEST FonctVireDernier_rec============================\n");
-        (FonctVireDernier_rec);
+        testFonctVireDernier(FonctVireDernier_rec);
     }
-    if(FALSE) {
+    if(TRUE) {
         printf("============================TEST FonctVireDernier_iter============================\n");
         testFonctVireDernier(FonctVireDernier_iter);
     }
-    if(FALSE) {
+    if(TRUE) {
         printf("============================TEST AjouteDevantPremierZero============================\n");
         testAjouteDevantPremierZero();
     }
     if(TRUE) {
         printf("============================TEST AjouteDevantDernierZero_rec============================\n");
-        testAjouteDevantDernierZero();
+        testAjouteDevantDernierZero(AjouteDevantDernierZero_rec);
         }
-    if(FALSE) {
-        printf("============================TEST AjouteDevantDernierZero_rec_term===========PAS FAIT=================\n");
+    if(TRUE) {
+        printf("============================TEST AjouteDevantDernierZero_rec_term============================\n");
+        testAjouteDevantDernierZero(AjouteDevantDernierZero_rec_term);
+
     }
-    if(FALSE) {
-        printf("============================TEST AjouteDevantDernierZero_iter============PAS FAIT================\n");
+    if(TRUE) {
+        printf("============================TEST AjouteDevantDernierZero_iter============================\n");
+        testAjouteDevantDernierZero(AjouteDevantDernierZero_iter);
     }
-    if(FALSE) {
+    if(TRUE) {
         printf("============================TEST Tic============================\n");
         testTic();
     }
