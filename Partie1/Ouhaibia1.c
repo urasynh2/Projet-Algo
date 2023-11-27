@@ -3,6 +3,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/*************************************************************/
+/* Nom: OUHAIBIA                                             */
+/* Prénom: Mohamed Amine                                     */
+/* Email: mohamed-amine.ouhaibia@universite-paris-saclay.fr  */
+/*************************************************************/
+
 /*************************************************/
 /*                                               */
 /*                sucre syntaxique               */
@@ -744,7 +750,7 @@ if (false) {
 
 /******************    Ackermann    *******************************/
 
-if (true){
+if (false){
 
         for(i=2 ; i<=5 ; i++) { // numéro de version
             for (j = 0; j <=5; j++) {

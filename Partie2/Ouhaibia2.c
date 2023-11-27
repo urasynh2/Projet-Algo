@@ -316,7 +316,7 @@ void affiche(Liste l)
         printf(", %d", premier(L2));
         L2 = suite(L2);
     }
-    printf("]\n");
+    printf("]");
 }
 
 
@@ -1038,68 +1038,68 @@ void poup (Liste l)
     ) ;
 }
 
-
-int main(int argc, char** argv){
-    system("cls");
-    printf("DEBUT MAIN \n");
-    if(TRUE) {
-        printf("============================TEST UnPlusDeuxEgalTrois============================\n");
-        testUnPlusDeuxEgalTrois();
-    }
-    if(TRUE) {
-        printf("============================TEST Croissante============================\n");
-        testCroissante();
-    }
-    if(TRUE) {
-        printf("============================TEST NombreMemePosition_rec============================\n");
-        testNombreMemePosition(NombreMemePosition_rec);
-    }
-    if(TRUE) {
-        printf("============================TEST NombreMemePosition_iter============================\n");
-        testNombreMemePosition(NombreMemePosition_iter);
-    }
-    if(TRUE) {
-        printf("============================TEST NombreMemePosition_rec_sf============================\n");
-        testNombreMemePosition(NombreMemePosition_rec_sf);
-    }
-    if(TRUE) {
-        printf("============================TEST NombreMemePosition_rec_sp============================\n");
-        testNombreMemePosition(NombreMemePosition_rec_sp);
-    }
-    if(TRUE) {
-        printf("============================TEST FonctVireDernier_rec============================\n");
-        testFonctVireDernier(FonctVireDernier_rec);
-    }
-    if(TRUE) {
-        printf("============================TEST FonctVireDernier_iter============================\n");
-        testFonctVireDernier(FonctVireDernier_iter);
-    }
-    if(TRUE) {
-        printf("============================TEST AjouteDevantPremierZero============================\n");
-        testAjouteDevantPremierZero();
-    }
-    if(TRUE) {
-        printf("============================TEST AjouteDevantDernierZero_rec============================\n");
-        testAjouteDevantDernierZero(AjouteDevantDernierZero_rec);
-        }
-    if(TRUE) {
-        printf("============================TEST AjouteDevantDernierZero_rec_term============================\n");
-        testAjouteDevantDernierZero(AjouteDevantDernierZero_rec_term);
-
-    }
-    if(TRUE) {
-        printf("============================TEST AjouteDevantDernierZero_iter============================\n");
-        testAjouteDevantDernierZero(AjouteDevantDernierZero_iter);
-    }
-    if(TRUE) {
-        printf("============================TEST Tic============================\n");
-        testTic();
-    }
-
-
-
-    printf("FIN MAIN\n");
-    return 0;
-}
+//
+//int main(int argc, char** argv){
+//    system("cls");
+//    printf("DEBUT MAIN \n");
+//    if(TRUE) {
+//        printf("============================TEST UnPlusDeuxEgalTrois============================\n");
+//        testUnPlusDeuxEgalTrois();
+//    }
+//    if(TRUE) {
+//        printf("============================TEST Croissante============================\n");
+//        testCroissante();
+//    }
+//    if(TRUE) {
+//        printf("============================TEST NombreMemePosition_rec============================\n");
+//        testNombreMemePosition(NombreMemePosition_rec);
+//    }
+//    if(TRUE) {
+//        printf("============================TEST NombreMemePosition_iter============================\n");
+//        testNombreMemePosition(NombreMemePosition_iter);
+//    }
+//    if(TRUE) {
+//        printf("============================TEST NombreMemePosition_rec_sf============================\n");
+//        testNombreMemePosition(NombreMemePosition_rec_sf);
+//    }
+//    if(TRUE) {
+//        printf("============================TEST NombreMemePosition_rec_sp============================\n");
+//        testNombreMemePosition(NombreMemePosition_rec_sp);
+//    }
+//    if(TRUE) {
+//        printf("============================TEST FonctVireDernier_rec============================\n");
+//        testFonctVireDernier(FonctVireDernier_rec);
+//    }
+//    if(TRUE) {
+//        printf("============================TEST FonctVireDernier_iter============================\n");
+//        testFonctVireDernier(FonctVireDernier_iter);
+//    }
+//    if(TRUE) {
+//        printf("============================TEST AjouteDevantPremierZero============================\n");
+//        testAjouteDevantPremierZero();
+//    }
+//    if(TRUE) {
+//        printf("============================TEST AjouteDevantDernierZero_rec============================\n");
+//        testAjouteDevantDernierZero(AjouteDevantDernierZero_rec);
+//        }
+//    if(TRUE) {
+//        printf("============================TEST AjouteDevantDernierZero_rec_term============================\n");
+//        testAjouteDevantDernierZero(AjouteDevantDernierZero_rec_term);
+//
+//    }
+//    if(TRUE) {
+//        printf("============================TEST AjouteDevantDernierZero_iter============================\n");
+//        testAjouteDevantDernierZero(AjouteDevantDernierZero_iter);
+//    }
+//    if(TRUE) {
+//        printf("============================TEST Tic============================\n");
+//        testTic();
+//    }
+//
+//
+//
+//    printf("FIN MAIN\n");
+//    return 0;
+//}
 
 #pragma clang diagnostic pop
