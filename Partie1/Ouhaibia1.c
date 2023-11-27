@@ -584,7 +584,7 @@ int main(int argc, char** argv){
   
 /****************  petit test sur le fonctionnement du switch  ************/
 
-if (false) {
+if (true) {
 
  switch (2)  
    {
@@ -612,7 +612,7 @@ if (false) {
       
 /************************  taille des nombres  *************************/
       
-if (false) {
+if (true) {
        
        printf("ce programme suppose que les long font 8 octets\n") ;
        printf("S'ils n'en font que 4, il faudra utiliser long long\n") ;
@@ -642,7 +642,7 @@ if (false) {
 
 /************************  factorielle  *************************/
 
-if (false) {
+if (true) {
 
      printf("%lld \n",fact(5)) ;
      printf("%lld \n",fact2(5)) ;
@@ -656,15 +656,15 @@ if (false) {
   // e = 2,7182818284 5904523536 0287471352 6624977572 4709369995 
   //       9574966967 6277240766 3035354759 4571382178 5251664274
 
-if (false) {
+if (true) {
 
     //printf("e = 2,7182818284590452353602874713526624977572470936999595749669676277240766303535475945713821785251664274\n");
     printf("e1 = %.20f \n", Efloat()) ;
     printf("e2 = %.30lf \n", Edouble()) ;
-    printf("e3 = %.40Lf \n", Elongdouble()) ;
+    //printf("e3 = %.40Lf \n", Elongdouble()) ;
 }
 
-if (false) {
+if (true) {
             afficheYfloat(30) ;
             afficheYdouble(30) ;
             //afficheYlongdouble(30) ;
@@ -672,7 +672,7 @@ if (false) {
         
 /******************    power     *******************************/
 
-if (false) {
+if (true) {
     double X = -2;
     long N = 2;
     //   test simplet, vérifie le B.A. BA, test de 2^10 pour toutes les versions
@@ -686,7 +686,7 @@ if (false) {
 }
 
         
-if (false) {
+if (true) {
 
         i=9;  // numéro de la version que l'on teste
 
@@ -704,7 +704,7 @@ if (false) {
        
 }
      
-if (false) {
+if (true) {
 
         // tests sur la précision que l'on obtient suivant que
         // l'on utilise float, double, long double
@@ -750,9 +750,9 @@ if (false) {
 
 /******************    Ackermann    *******************************/
 
-if (false){
+if (true){
 
-        for(i=2 ; i<=5 ; i++) { // numéro de version
+        for(i=1 ; i<=5 ; i++) { // numéro de version
             for (j = 0; j <=5; j++) {
                 // test de A(j,0) pour j de 0 à 5
                 printf("Ack%d(%d) = %d \n", i, j, Ackermann(j, i));

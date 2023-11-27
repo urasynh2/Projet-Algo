@@ -1,7 +1,82 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
-#include "Ouhaibia2.c"
+
+/*************************************************************/
+/* Nom: OUHAIBIA                                             */
+/* Prénom: Mohamed Amine                                     */
+/* Email: mohamed-amine.ouhaibia@universite-paris-saclay.fr  */
+/*************************************************************/
+
+
+typedef struct Bloc
+{
+    int nombre;
+    struct Bloc *suivant;
+} Bloc;
+
+typedef Bloc *Liste ;
+
+
+typedef enum { FALSE, TRUE} bool;
+
+
+void initVide( Liste *L)
+{
+    *L = NULL ;
+}
+
+bool estVide(Liste l)
+{
+    return l == NULL ;
+}
+
+int premier(Liste l)
+{
+    return l->nombre ;
+}
+
+Liste ajoute(int x, Liste l)
+{
+    Liste tmp = (Liste) malloc(sizeof(Bloc)) ;
+    tmp->nombre = x ;
+    tmp->suivant = l ;
+    return tmp ;
+}
+
+void empile(int x, Liste *L)
+{
+    *L = ajoute(x,*L) ;
+}
+
+Liste suite(Liste l)
+{
+    return l->suivant ;
+}
+
+
+void depile(Liste *L)
+{
+    Liste tmp = *L ;
+    *L = suite(*L) ;
+    free(tmp) ;
+}
+
+void affiche(Liste l)
+{
+    printf("[");
+    Liste L2 = l;
+    if (!estVide(L2)) {
+        printf("%d", premier(L2));
+        L2 = suite(L2);
+    }
+    while(!estVide(L2))
+    {
+        printf(", %d", premier(L2));
+        L2 = suite(L2);
+    }
+    printf("]");
+}
+//========================================================================
 
 typedef struct BlocP
 {
@@ -10,7 +85,6 @@ typedef struct BlocP
 } BlocP;
 
 typedef BlocP *ListeP ;
-//========================================================================
 
 
 void initVideP( ListeP *L)
@@ -58,7 +132,7 @@ void afficheP(ListeP l)
 {
     printf("[  ");
     ListeP L2 = l;
-    if (!estVide(L2)) {
+    if (!estVideP(L2)) {
         affiche(premierP(L2));
         L2 = suiteP(L2);
     }

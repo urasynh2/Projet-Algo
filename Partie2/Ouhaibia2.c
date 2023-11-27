@@ -558,65 +558,28 @@ void testNombreMemePosition(int (*operation)(Liste, Liste)){
 
 Liste FonctVireDernier_rec(Liste l){
     if(estVide(l) OR estVide(suite(l))){
-        Liste LV;
-        initVide(&LV);
+        Liste LV;                       //ajoute l'avant dernier a une liste vide
+        initVide(&LV);               //ajoute chaque element a la liste qui remonte recursivement
         return LV;
     }else{
         return ajoute(premier(l), FonctVireDernier_rec(suite(l)));
     }
 }
 
-
-/*
-Liste FonctVireDernier_iter(Liste l) {
-
-    Liste res;
-    initVide(&res);
-    if (estVide(l)) {
-        return res;
-    }
-
-    Liste copie = l;
-    while (NOT estVide(suite(copie))) {
-        res = ajoute(premier(copie), res);
-        affiche(res);
-        copie = suite(copie);
-    }
-    return res;
-}
-*/
-
-/*
-Liste FonctVireDernier_iter(Liste l) {
-    Liste res;
-    if (estVide(l) OR estVide(suite(l))) {
-        initVide(&res);
-        return res;
-    }
-
-    Liste *dernier;
-    dernier =&res;
-    while (NOT estVide(suite(*dernier))) {
-        dernier = PointeurSuite(dernier);
-    }
-
-    return res
-
-*/
 Liste FonctVireDernier_iter(Liste l) {
     Liste res;
     initVide(&res);
     if (estVide(l) OR estVide(suite(l))) {
         return res;
     }
-    Liste *pl, *pres;
-    pl = &l;
-    pres = &res;
+    Liste *pl, *pres;                     //initialise 2 pointeurs
+    pl = &l;                              //un pointant vers la liste que l'on va utiliser pour la parcourir
+    pres = &res;                          //et un pointant vers la liste resultat que l'on va utiliser pour la créer
     while (NOT estVide(suite(*pl))) {
-        empile(premier(*pl),pres);
-        pl  = PointeurSuite(pl);
-        pres  = PointeurSuite(pres);
-    }
+        empile(premier(*pl),pres);   //empile le premier element de la liste sur le resultat
+        pl  = PointeurSuite(pl);           //fait avancer les 2 pointeur, pl pour parcourir
+        pres  = PointeurSuite(pres);       //et pres pour se placer sur le prochain bloc pour pouvoir empiler au bon endroit
+    }                                        //on continue jusqu'a l'avant dernier element inclus
     return res;
 }
 
@@ -726,17 +689,17 @@ void testAjouteDevantPremierZero() {
 /*                                               */
 /*************************************************/
 
-void Bis(Liste *l,int x,bool* vu){
-    if(estVide(*l)){
-        if (!*vu){
-            empile(x,l);
+void Bis(Liste *l,int x,bool* vu){ //le booléen vu aura 2 utilités differentes ici
+    if(estVide(*l)){               //en descendant il servira a savoir s'il y a un 0 dans la liste
+        if (!*vu){                 //si ce n'est pas le cas
+            empile(x,l);           //on place x a la fin
         }
     }else{
-        if (premier(*l)==0){
+        if (premier(*l)==0){       //indique qu'il y a un 0
             *vu = TRUE;
         }
         Bis(PointeurSuite(l),x,vu);
-        if(premier(*l)==0 AND *vu){
+        if(premier(*l)==0 AND *vu){   //et en remontant il servira a indiquer si x a deja été placé a sa place
             *vu = FALSE;
             empile(x,l);
         }
@@ -748,16 +711,16 @@ void AjouteDevantDernierZero_rec(Liste *l,int x){
     Bis(l,x,&vu);
 }
 
-void Bis2(Liste *l,int x,Liste* m) {
-    if(estVide(*l)){
-        if(m!=NULL){
-            empile(x,m);
-        }else{
-            empile(x,l);
+void Bis2(Liste *l,int x,Liste* m) {       //le pointeur m nous servira a pointer le dernier 0
+    if(estVide(*l)){                       //au tout debut on le fait pointer vers NULL donc en arrivant a la fin de la
+        if(m==NULL){                       //liste si il pointe encore vers NULL, cela veut dire que la liste ne contient pas de
+            empile(x,l);                   //dans ce cas on place x a la fin de la liste
+        }else{                             //sinon
+            empile(x,m);                //on le place a l'emplacement du dernier 0 connu
         }
     }else{
-        if(premier(*l)==0){
-            m = l;
+        if(premier(*l)==0){                //a chaque rencontre d'un nouveau 0,
+            m = l;                         //on fait pointer m vers ce dernier
         }
         Bis2(PointeurSuite(l),x,m);
     }
@@ -770,7 +733,7 @@ void AjouteDevantDernierZero_rec_term(Liste *l,int x){
     Bis2(l, x, m);
 }
 
-void AjouteDevantDernierZero_iter(Liste *l, int x){
+void AjouteDevantDernierZero_iter(Liste *l, int x){    //exactement la meme chose qu'avant mais en iteratif
     Liste* p,m;
     p = l;
     m = NULL;
@@ -843,53 +806,46 @@ void testAjouteDevantDernierZero(void (*operation)(Liste*,int)){
 /*           Tic                                 */
 /*                                               */
 /*************************************************/
-/*
-void Tic(Liste *l){
-    if(NOT estVide(*l)){
-        if(NOT estVide(suite(*l))) {
-            if (premier(*l) == 0 AND premier(suite(*l)) == 0) {
-                depile(l);
-                Tic(l);
-            } else if (premier(*l) == 0 AND premier(suite(*l)) != 0) {
-                depile(l);
-            } else if (premier(*l) != 0) {
-                empile(0, l);
+
+//void Tic(Liste *l){
+//    if(NOT estVide(*l)){
+//        if(NOT estVide(suite(*l))) {
+//            if (premier(*l) == 0){      //quand on tombe sur un 0
+//                depile(l);              //on le retire dans tout les cas
+//                if(premier(*l) == 0){   //si le nombre d'apres est aussi un 0
+//                    Tic(l);             //on continue l'appel recursif
+//                }                       //sinon la fonction s'arrete la ca nous evitera de retirer les eventuels 0 d'apres donc
+//            }else{                      //si on tombe sur un non nul
+//                empile(0, l);        //on met un 0 devant
+//                Tic(PointeurSuite(PointeurSuite(l))); // et on continue (appel recursif)
+//            }
+//        }else{                          //(dernier bloc) dans le cas ou le premier 0 et ses eventuels 0 consecutifs
+//            if (premier(*l) == 0){      //se trouvent a la fin de la liste
+//                depile(l);              //on le retire et pas d'appel recursif
+//            }else{                      //dans le cas ou la liste de contient que des 0
+//                empile(0, l);        //on met un 0 devant
+//            }
+//        }
+//    }
+//}
+
+void Tic(Liste *l) {
+    if (NOT estVide(*l)) {
+        if (premier(*l) == 0) {
+            depile(l);
+            if (NOT estVide(suite(*l))) {
+                if (premier(*l) == 0) {
+                    Tic(l);
+                }
+            }
+        } else {
+            empile(0, l);
+            if (NOT estVide(suite(*l))) {
                 Tic(PointeurSuite(PointeurSuite(l)));
             }
-        }else{
-            if (premier(*l) == 0){
-                depile(l);
-            }else if (premier(*l)!=0){
-                empile(0, l);
-            }
         }
     }
 }
-*/
-
-
-void Tic(Liste *l){
-    if(NOT estVide(*l)){
-        if(NOT estVide(suite(*l))) {
-            if (premier(*l) == 0){      //Si on tombe sur un 0
-                depile(l);              //on le retire
-                if(premier(*l) == 0){   //si le nombre d'apres est aussi un 0
-                    Tic(l);             //on continue (appel recursif)
-                }                       //sinon on s'arrete la (pas d'appel recursif)
-            }else{                      //si on tombe sur un non nul
-                empile(0, l);        //on met un 0 devant
-                Tic(PointeurSuite(PointeurSuite(l))); //on continue (appel recursif)
-            }
-        }else{                          //si on est sur la derniere case du tableau
-            if (premier(*l) == 0){      //si cest un 0
-                depile(l);              //on le retire
-            }else{                      //sinon
-                empile(0, l);        //on met un 0 devant
-            }
-        }
-    }
-}
-
 
 
 void testTic(){
