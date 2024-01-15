@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -314,7 +313,7 @@ void affiche(Liste l)
         printf(", %d", premier(L2));
         L2 = suite(L2);
     }
-    printf("]");
+    printf("]\n");
 }
 
 
@@ -708,7 +707,7 @@ void AjouteDevantDernierZero_rec(Liste *l,int x){
     bool vu = FALSE;
     Bis(l,x,&vu);
 }
-
+//****************************************************************************************
 void Bis2(Liste *l,int x,Liste* m) {       //le pointeur m nous servira a pointer le dernier 0
     if(estVide(*l)){                       //au tout debut on le fait pointer vers NULL donc en arrivant a la fin de la
         if(m==NULL){                       //liste si il pointe encore vers NULL, cela veut dire que la liste ne contient pas de
@@ -730,7 +729,7 @@ void AjouteDevantDernierZero_rec_term(Liste *l,int x){
     m = NULL;
     Bis2(l, x, m);
 }
-
+//**********************************************************
 void AjouteDevantDernierZero_iter(Liste *l, int x){    //exactement la meme chose qu'avant mais en iteratif
     Liste* p,m;
     p = l;
@@ -744,9 +743,10 @@ void AjouteDevantDernierZero_iter(Liste *l, int x){    //exactement la meme chos
     if(m==NULL){
         empile(x,p);
     }else{
-        empile(x,m);
+        empile(x, m);
     }
 }
+
 
 void testAjouteDevantDernierZero(void (*operation)(Liste*,int)){
     Liste l1;
@@ -813,9 +813,8 @@ void Tic(Liste *l) {
                 if (premier(*l) == 0) { //et que la prochaine case est egalement un 0
                     Tic(l);           //on continue l'appel recursif
                 }                     //sinon on arrete la fonction ca nous evitera de retirer les eventuels 0 non consecutifs au 1er 0
-            }  //si le 0 qu'on vient d'enlever etait le dernier element de la liste alors on arrete la fonction (dans le cas d'une liste qui se termine
-            //                                                                                                   par les premiers 0 consecutifs [2,1,5,0,0,0])
-
+            }  //si le 0 qu'on vient d'enlever etait le dernier element de la liste alors on arrete la fonction (dans le cas d'une
+            //                                                   liste qui se termine par les premiers 0 consecutifs [2,1,5,0,0,0])
         } else {    //si on tombe sur un non nul
             empile(0, l);  //on met un 0 devant
             if (NOT estVide(suite(suite(*l)))) {  //si ce non nul n'etait pas le dernier element
